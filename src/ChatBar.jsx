@@ -3,11 +3,15 @@ import React, {Component} from 'react';
 class ChatBar extends Component {
   _handleKeyPress = (e) => {
     if (e.key === 'Enter') {
+      const userName = (document.getElementById('user').value) ? document.getElementById('user').value : 'Anonymous';
+      this.props.addUserName(userName);
+
       const newMsg = {
-        username: (document.getElementById('user').value) ? document.getElementById('user').value : 'Anonymous',
-        content: document.getElementById('comment').value
+        username: userName,
+        content: e.target.value
       };
-      this.props.getMsg(newMsg);
+
+      this.props.addMsg(newMsg);
       document.getElementById('comment').value = '';
     }
   }

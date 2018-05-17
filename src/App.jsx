@@ -2,20 +2,15 @@ import React, {Component} from 'react';
 import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx';
 
-// WebSocket WebSocket(
-//   in DOMString "ws://localhost:3001",
-//   in optional DOMString protocols
-// );
-
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      currentUser: {name: "Bob"},
+      currentUser: {},
       messages: []
     };
-    this.getMsg = this.getMsg.bind(this);
-    //this.socket = this.socket.bind(this);console.log(this.socket);
+    this.addMsg = this.addMsg.bind(this);
+    this.addUserName = this.addUserName.bind(this);
   }
 
   socketInit(){
@@ -32,9 +27,7 @@ class App extends Component {
     }
 
     let receivedMsg = {};
-    //console.log(1, this);
     this.socket.onmessage = function(event) {
-      let msg = [];
       if(this.state.messages){
         const receivedMsg = JSON.parse(event.data);
         const messages = this.state.messages.concat(receivedMsg);
@@ -48,11 +41,26 @@ class App extends Component {
     // is not the same. need to use 'bind(this)' to be the same 'this'.
   }
 
-  getMsg(msg){
-    //const msgId = this.state.messages.length + 1;
-    //const messages = this.state.messages.concat(msg);
+  addMsg(msg){
     this.socket.send(JSON.stringify(msg));
-    // this.setState = {
+  }
+  addUserName(user){
+    this.setState({
+      currentUser: {name: user}
+    })
+  }
+
+  render() {
+    return (
+      <div>
+        <MessageList messages={this.state.messages}/>
+        <ChatBar currentUser={this.state.currentUser} addMsg={this.addMsg} addUserName={this.addUserName} />
+      </div>
+    );
+  }
+}
+
+// this.setState = {
     //   currentUser: {name: "Bob"},
     //   messages: [
     //     {
@@ -73,15 +81,5 @@ class App extends Component {
     //   id: this.state.messages.id
     // })
     //console.log('After this state:', this.state.messages);
-  }
-  render() {
-    return (
-      <div>
-        <MessageList messages={this.state.messages}/>
-        <ChatBar currentUser={this.state.currentUser} getMsg={this.getMsg} />
-      </div>
-    );
-  }
-}
 
 export default App;
