@@ -5,12 +5,72 @@ import ChatBar from './ChatBar.jsx';
 class App extends Component {
   constructor(props){
     super(props);
+
     this.state = {
       currentUser: {},
+      colour: 0,
       messages: []
     };
     this.addMsg = this.addMsg.bind(this);
     this.addUserName = this.addUserName.bind(this);
+  }
+
+  componentDidMount() {
+    console.log('componentDidMount <App />');
+    this.socket = this.socketInit();
+
+    this.socket.onopen = event => {
+      console.log('Connected to server');
+    }
+    this.socket.onmessage = (event) => {
+      //console.log(event.data);
+      const receivedMsg = JSON.parse(event.data);
+
+      // message to show online users in header
+      if(receivedMsg.type === 'onlineUsers'){
+        this.onlineUsers = this.getOnlineUsers(receivedMsg.onlineUsers);
+        this.setState({getOnlineUsers: this.onlineUsers});
+      }
+
+      if (this.state.messages && receivedMsg.type !== 'onlineUsers'){
+        let messages = {};
+        switch(receivedMsg.type) {
+          case 'incomingMessage':
+            break;
+          case 'incomingNotification':
+            if (this.state.currentUser !== receivedMsg.username) {
+              receivedMsg.content = (!this.state.currentUser.name ? 'Anonymous' : this.state.currentUser.name) + ' has changed username to ' + receivedMsg.username;
+            }
+            break;
+          default:
+            throw new Error('Unknown event type ' + receivedMsg.type);
+        }
+
+        // add new msg
+        messages = this.state.messages.concat(receivedMsg);
+
+        // set currentUser if it's been changed
+        // this is the case when the user changed username AND add contents
+        const newUser = messages[messages.length - 1].username;
+
+
+        if(this.state.currentUser !== newUser){
+          this.setState({
+            currentUser: {name: newUser},
+            colour: this.state.colour,
+            messages: messages
+          })
+        } else {
+          this.setState({
+            currentUser: {name: messages.username},
+            colour: this.state.colour,
+            messages: messages
+          })
+        }
+      }
+    }//.bind(this)  ===> if use ES5 in this.socket.onmessage = function(event){}
+    // the above this (from this.socket) and this.setState(in the onmessage block)
+    // is not the same. need to use 'bind(this)' to be the same 'this'.
   }
 
   socketInit(){
@@ -18,68 +78,30 @@ class App extends Component {
     return connection;
   }
 
-  componentDidMount() {
-    console.log("componentDidMount <App />");
-    this.socket = this.socketInit();
-
-    this.socket.onopen = event => {
-      console.log('Connected to server');
-    }
-
-    let receivedMsg = {};
-    this.socket.onmessage = function(event) {
-      if(this.state.messages){
-        const receivedMsg = JSON.parse(event.data);
-        const messages = this.state.messages.concat(receivedMsg);
-
-        this.setState({
-          messages: messages
-        })
-      }
-    }.bind(this)
-    // the above this (from this.socket) and this.setState(in the onmessage block)
-    // is not the same. need to use 'bind(this)' to be the same 'this'.
+  getOnlineUsers(users){
+    const navMsg = users + ((users === '1') ? ' user' : ' users') + ' online';
+    this.onlineUsers = navMsg;
+    return navMsg;
   }
 
   addMsg(msg){
     this.socket.send(JSON.stringify(msg));
   }
-  addUserName(user){
-    this.setState({
-      currentUser: {name: user}
-    })
+  addUserName(userInfo){
+    this.socket.send(JSON.stringify(userInfo));
   }
 
   render() {
     return (
       <div>
-        <MessageList messages={this.state.messages}/>
-        <ChatBar currentUser={this.state.currentUser} addMsg={this.addMsg} addUserName={this.addUserName} />
+        <nav class="navbar">
+          <a href="/" class="navbar-brand">Chatty</a>
+          <span class="online-users">{this.onlineUsers}</span>
+        </nav>
+        <MessageList currentUser={this.state.currentUser} messages={this.state.messages}/>
+        <ChatBar currentUser={this.state.currentUser} colour={this.state.colour} addMsg={this.addMsg} addUserName={this.addUserName} />
       </div>
     );
   }
 }
-
-// this.setState = {
-    //   currentUser: {name: "Bob"},
-    //   messages: [
-    //     {
-    //       username:,
-    //       content:,
-    //       id:
-    //     }]
-    // };
-    //console.log("msg", msg);
-    // const messages = this.state.connection.onmessage = (event) => {
-    //   var receivedMsg = JSON.parse(event.data);
-    //   console.log(receivedMsg);
-    // }
-    // const messages = this.state.messages.concat(msg);
-    // this.setState({
-    //   currentUser: {name: msg.username},
-    //   messages: this.state.messages,
-    //   id: this.state.messages.id
-    // })
-    //console.log('After this state:', this.state.messages);
-
 export default App;

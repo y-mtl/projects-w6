@@ -38,6 +38,16 @@ body {
   flex: 2;
 }
 
+.online-users {
+  color: #fff;
+  display: block;
+  float: right;
+  padding-right: 30px;
+  height: 60px;
+  line-height: 60px;
+  vertical-align: middle;
+}
+
 .message {
   display: flex;
   padding: 5px;
