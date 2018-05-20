@@ -1,17 +1,17 @@
+@import url('https://fonts.googleapis.com/css?family=Alegreya');
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css");
 
 body {
-  background: white;
-  color: black;
-  font-family: 'Open Sans', sans-serif;
+  background: #efefef;
+ font-family: 'Alegreya', serif;
   font-size: 14px;
   margin: 70px 0;
 }
 
 .chatbar {
-  background: tomato;
-  border-top: 1px solid black;
+  background: #7f9a14;
+  border-top: 1px solid #9fb93c;
   bottom: 0;
   display: flex;
   left: 0;
@@ -22,7 +22,7 @@ body {
 
 .chatbar-message,
 .chatbar-username {
-  border: 1px solid black;
+  border: 1px solid #9fb93c;
   display: block;
   height: 40px;
   line-height: 40px;
@@ -31,10 +31,12 @@ body {
 }
 
 .chatbar-message {
+  font-family: 'Open Sans', sans-serif;
   flex: 8;
 }
 
 .chatbar-username {
+  font-family: 'Open Sans', sans-serif;
   flex: 2;
 }
 
@@ -50,6 +52,7 @@ body {
 
 .message {
   display: flex;
+  font-family: 'Open Sans', sans-serif;
   padding: 5px;
 }
 
@@ -75,8 +78,9 @@ body {
 }
 
 .navbar {
-  background: tomato;
-  border-bottom: 1px solid black;
+  background: #7f9a14;
+  border-bottom: 1px solid #9fb93c;
+  color: #fff;
   height: 60px;
   left: 0;
   padding: 0 10px;
@@ -100,3 +104,27 @@ body {
 h1 {
   color: tomato;
 }
+
+.colour1 {
+  color: #588c7e;
+}
+.colour2 {
+  color: #c7b44d;
+}
+.colour3 {
+  color: #f2ae72;
+}
+.colour4 {
+  color: #d96459;
+}
+
+
+
+
+
+
+
+
+
+
+

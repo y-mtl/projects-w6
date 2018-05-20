@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 class ChatBar extends Component {
   // when press enter <input> for msg
   _handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && e.target.value) {
       const userName = (!document.getElementById('user').value) ? 'Anonymous' : document.getElementById('user').value;
 
       const newMsg = {
@@ -29,7 +29,6 @@ class ChatBar extends Component {
         };
         this.props.addUserName(newMsg);
       }
-
     }
   }
   render(){

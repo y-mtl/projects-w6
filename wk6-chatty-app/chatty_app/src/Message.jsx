@@ -5,7 +5,7 @@ function MessageItem(props) {
   if(props.message.type !== 'incomingNotification') {
     output =
     (<div className="message" key="props.message.id">
-      <span className="message-username">{props.message.username}</span>
+      <span className={`message-username ${ props.message.colour }`}>{props.message.username}</span>
       <span className="message-content">{props.message.content}</span>
     </div>);
   } else {

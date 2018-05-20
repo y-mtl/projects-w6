@@ -8,7 +8,6 @@ class App extends Component {
 
     this.state = {
       currentUser: {},
-      colour: 0,
       messages: []
     };
     this.addMsg = this.addMsg.bind(this);
@@ -33,7 +32,7 @@ class App extends Component {
       }
 
       if (this.state.messages && receivedMsg.type !== 'onlineUsers'){
-        let messages = {};
+        let messages = {};console.log(receivedMsg);
         switch(receivedMsg.type) {
           case 'incomingMessage':
             break;
@@ -52,7 +51,6 @@ class App extends Component {
         // set currentUser if it's been changed
         // this is the case when the user changed username AND add contents
         const newUser = messages[messages.length - 1].username;
-
 
         if(this.state.currentUser !== newUser){
           this.setState({
@@ -99,7 +97,7 @@ class App extends Component {
           <span class="online-users">{this.onlineUsers}</span>
         </nav>
         <MessageList currentUser={this.state.currentUser} messages={this.state.messages}/>
-        <ChatBar currentUser={this.state.currentUser} colour={this.state.colour} addMsg={this.addMsg} addUserName={this.addUserName} />
+        <ChatBar currentUser={this.state.currentUser} colour={this.state.messages.colour} addMsg={this.addMsg} addUserName={this.addUserName} />
       </div>
     );
   }
