@@ -1,5 +1,3 @@
-React Boilerplate
-============
 # Chatty App Project
 
 This App is a part of LHL projects, and it will let users chat online.
