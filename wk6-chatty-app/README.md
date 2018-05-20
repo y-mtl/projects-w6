@@ -22,8 +22,10 @@ Chatty React App (Front-end): http://localhost:3000
 Chatty WebSockets Server (Server side): http://localhost:3001
 
 ### Final Product
-!["Screenshot of URLs page"](https://xxxxx. - here is image url)
-!["Screenshot of Register page"](https://xxxxx. - here is image url)
+!["Screenshot of Chat page"](https://raw.githubusercontent.com/y-mtl/projects-w6/master/wk6-chatty-app/docs/animated2.gif)
+!["Screenshot of Chat page"](https://raw.githubusercontent.com/y-mtl/projects-w6/master/wk6-chatty-app/docs/screenshot1.png)
+!["Screenshot of Chat page when a user types"](https://raw.githubusercontent.com/y-mtl/projects-w6/master/wk6-chatty-app/docs/screenshot2.png)
+!["Screenshot of Chat page when another user types"](https://raw.githubusercontent.com/y-mtl/projects-w6/master/wk6-chatty-app/docs/screenshot3.png)
 
 ### Static Files
 
