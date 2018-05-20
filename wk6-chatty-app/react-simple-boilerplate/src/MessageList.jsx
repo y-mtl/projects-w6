@@ -15,16 +15,3 @@ class MessageList extends Component {
   }
 }
 export default MessageList;
-
-
-// function MessageList(messages) {
-//   render(){
-
-//   }
-//   return (
-//     <main className="messages">
-//       <MessageItem />
-//     </main>
-//   );
-// }
-

@@ -2,13 +2,9 @@ const express = require('express');
 const WebSocket = require('ws');
 const SocketServer = require('ws').Server;
 const uuidv1 = require('uuid/v1');
-
 const ws = new WebSocket('ws://localhost:3001');
-
-// Set the port to 3001
 const PORT = 3001;
 
-// Create a new express server
 const server = express()
    // Make the express server serve static assets (html, javascript, css) from the /public folder
   .use(express.static('public'))
@@ -17,9 +13,7 @@ const server = express()
 // Create the WebSockets server
 const wss = new SocketServer({ server });
 
-// Set up a callback that will run when a client connects to the server
-// When a client connects they are assigned a socket, represented by
-// the ws parameter in the callback.
+// add unique ID when a user connected.
 wss.getUniqueID = function () {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
@@ -27,9 +21,10 @@ wss.getUniqueID = function () {
   return s4() + s4() + '-' + s4();
 };
 
-// ran# to allocate different colours to each user (4 colours)
+// ran# to allocate different colours to each user
+// (4 colours for css class, colour codes are in scss file.)
+let cssPalettes = ['colour1', 'colour2', 'colour3', 'colour4'];
 wss.getColourID = function () {
-  let cssPalettes = ['colour1', 'colour2', 'colour3', 'colour4'];
   cssPalettes.sort(function(){
     return Math.random()-0.5;
   });
@@ -51,13 +46,12 @@ wss.broadcast = function broadcast(users) {
 
 wss.on('connection', (ws) => {
   console.log('Client connected');
-  ws.id = wss.getUniqueID(); //console.log(ws.id);
-  ws.colorid = wss.getColourID();// console.log('color: ', ws.colorid);
-  //console.log(ws.id);
+  ws.id = wss.getUniqueID();
+  ws.colorid = wss.getColourID();
+
   let clientsNum = 0;
   wss.clients.forEach(function each(client) {
     clientsNum++;
-    // console.log('Client.ID: ' + client.id);
     wss.broadcast(clientsNum);
   });
 
@@ -75,7 +69,7 @@ wss.on('connection', (ws) => {
         console.log("Event type issue " + message.type);
     }
     message['id'] = uuidv1();
-    // css color
+    // add css colour class
     message.colour = ws.colorid;
     msgToSend = JSON.stringify(message);
     wss.clients.forEach(function each(client) {
@@ -86,13 +80,11 @@ wss.on('connection', (ws) => {
   });
 
   // Set up a callback for when a client closes the socket.
-  // This usually means they closed their browser.
   ws.on('close', () => {
     console.log('Client disconnected');
     delete(ws.id);
     clientsNum--;
     wss.clients.forEach(function each(client) {
-      // console.log('Client.ID: ' + client.id);
       wss.broadcast(clientsNum);
     });
   });

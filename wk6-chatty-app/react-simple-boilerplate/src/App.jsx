@@ -22,7 +22,6 @@ class App extends Component {
       console.log('Connected to server');
     }
     this.socket.onmessage = (event) => {
-      //console.log(event.data);
       const receivedMsg = JSON.parse(event.data);
 
       // message to show online users in header
@@ -32,7 +31,8 @@ class App extends Component {
       }
 
       if (this.state.messages && receivedMsg.type !== 'onlineUsers'){
-        let messages = {};console.log(receivedMsg);
+        let messages = {};
+        // handler when user types a message or change username
         switch(receivedMsg.type) {
           case 'incomingMessage':
             break;
@@ -47,11 +47,9 @@ class App extends Component {
 
         // add new msg
         messages = this.state.messages.concat(receivedMsg);
-
         // set currentUser if it's been changed
         // this is the case when the user changed username AND add contents
         const newUser = messages[messages.length - 1].username;
-
         if(this.state.currentUser !== newUser){
           this.setState({
             currentUser: {name: newUser},
@@ -66,9 +64,7 @@ class App extends Component {
           })
         }
       }
-    }//.bind(this)  ===> if use ES5 in this.socket.onmessage = function(event){}
-    // the above this (from this.socket) and this.setState(in the onmessage block)
-    // is not the same. need to use 'bind(this)' to be the same 'this'.
+    }
   }
 
   socketInit(){
@@ -82,9 +78,11 @@ class App extends Component {
     return navMsg;
   }
 
+  // send msg to the server
   addMsg(msg){
     this.socket.send(JSON.stringify(msg));
   }
+  // send username to the server when newly added or changed
   addUserName(userInfo){
     this.socket.send(JSON.stringify(userInfo));
   }

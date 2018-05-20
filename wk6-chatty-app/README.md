@@ -21,6 +21,10 @@ open http://localhost:3000
 Chatty React App (Front-end): http://localhost:3000
 Chatty WebSockets Server (Server side): http://localhost:3001
 
+### Final Product
+!["Screenshot of URLs page"](https://xxxxx. - here is image url)
+!["Screenshot of Register page"](https://xxxxx. - here is image url)
+
 ### Static Files
 
 You can store static files like images, fonts, etc in the `build` folder.
