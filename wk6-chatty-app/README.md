@@ -40,7 +40,7 @@ Here are main dependencies.
 Server side:
 * Express
 * UUID
-* Websockets -this app uses ws (https://github.com/websockets/ws)
+* Websockets -this app uses [ws](https://github.com/websockets/ws)
 
 Front-end side:
 * React
